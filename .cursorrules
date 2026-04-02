@@ -1,0 +1,70 @@
+# Ryan's Yard — Cursor Rules
+
+## Project
+Mobile-first browser sports game built as a birthday gift for Ryan, turning 14.
+React + TypeScript + Vite + Tailwind CSS. Landscape orientation only.
+No backend, no auth, no database — pure frontend, deployed to Vercel.
+
+## Identity
+- Game name: Ryan's Yard
+- Jersey number: #14 (decorative element throughout)
+- Color scheme: Jets green (#203731), white, black
+- Font: Press Start 2P (Google Fonts, loaded in index.html)
+- Aesthetic: 8-bit/16-bit pixel art, neighborhood sports theme
+
+## File Structure
+src/
+  App.tsx              ← game state machine and screen router (owns all state)
+  types.ts             ← shared TypeScript types
+  index.css            ← Tailwind directives, CSS variables, font import
+  components/
+    TitleScreen.tsx
+    ScoreScreen.tsx
+    RoundIntro.tsx
+    RotatePrompt.tsx
+  games/
+    Baseball.tsx
+    Basketball.tsx
+    Football.tsx
+    Lacrosse.tsx
+
+## State Rules
+- App.tsx owns ALL game state via useState (screen, roundIndex, scores)
+- Game loop state (positions, timers, RAF handles) lives in useRef — never useState
+- Always cancel requestAnimationFrame in the useEffect cleanup function
+- Each game component receives: onComplete: (score: number) => void
+- Call onComplete when the round ends (strikes out, attempts exhausted, etc.)
+
+## Code Rules
+- TypeScript strict mode. No `any`. No `@ts-ignore` without a written explanation.
+- No external asset files — all visuals via CSS, emoji, or inline canvas drawing
+- No animation libraries — CSS transitions and requestAnimationFrame only
+- Touch targets minimum 48x48px on all interactive elements
+- No hover-dependent interactions — touch/tap only
+- ESLint + Prettier compliant
+- No placeholders, no TODOs, no "add your logic here" stubs in delivered code
+- Use CSS variables defined in index.css for all colors (never hardcode hex values)
+
+## Screen Flow
+title → round-intro → baseball → round-intro → basketball
+      → round-intro → football → round-intro → lacrosse → score → title
+
+## Game Summaries
+- Baseball: Pitch flies top→bottom, tap SWING in timing window. 3 strikes ends round.
+- Basketball: Vertical shot meter loops. Tap SHOOT in green zone. 10 attempts.
+- Football: Receiver runs route, tap THROW to pass to their position. 8 throws.
+- Lacrosse: Shot incoming, tap correct save zone (Left/Center/Right). 10 shots.
+
+## Orientation
+- Landscape only. CSS media query hides .game-root in portrait, shows .rotate-prompt.
+- RotatePrompt.tsx shows fullscreen "ROTATE YOUR PHONE" message in portrait mode.
+
+## Do Not
+- Do not add a router (no react-router, no next/router)
+- Do not add sound (future enhancement)
+- Do not add a leaderboard or any server-side logic
+- Do not add hover states
+- Do not use any third-party animation library
+- Do not use portrait-only layout assumptions anywhere in game components
+- Do not add SEO meta tags (this is a game, not a webpage)
+- Do not import any external image or audio files
